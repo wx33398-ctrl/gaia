@@ -1,0 +1,183 @@
+<<<GoldenOrderMapper.selectById | id>>>
+SELECT t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone,(select count(1) from golden_order o where o.dept_id = t.dept_id) as orderCount FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id WHERE t.id=#{id}  AND t.del_flag='0'
+<<<GoldenOrderMapper.selectPage | ewNull>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.del_flag='0'
+<<<GoldenOrderMapper.selectPage | ewEmpty>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE  t.del_flag='0'
+<<<GoldenOrderMapper.selectPage | full>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.id=#{ew.entity.id}
+ AND t.name=#{ew.entity.name}
+ AND t.status=#{ew.entity.status}
+ AND t.amount=#{ew.entity.amount}
+ AND t.create_time=#{ew.entity.createTime}
+ AND t.dept_id=#{ew.entity.deptId}
+ AND d.dept_name=#{ew.entity.deptName}
+ AND g.phone LIKE CONCAT('%',#{ew.entity.phone},'%')
+ AND t.create_time >= #{ew.entity.startTime}
+ AND t.create_time <= #{ew.entity.endTime}
+ AND t.amount >=#{ew.entity.minAmount}
+ AND t.status IN (#{__frch_item_0},#{__frch_item_1})
+ AND t.id NOT IN (#{__frch_item_2})
+
+ AND t.del_flag='0'
+
+AND (name = #{ew.paramNameValuePairs.MPGENVAL1})
+<<<GoldenOrderMapper.selectList | ewNull>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.del_flag='0'
+<<<GoldenOrderMapper.selectList | ewEmpty>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE  t.del_flag='0'
+<<<GoldenOrderMapper.selectList | full>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.id=#{ew.entity.id}
+ AND t.name=#{ew.entity.name}
+ AND t.status=#{ew.entity.status}
+ AND t.amount=#{ew.entity.amount}
+ AND t.create_time=#{ew.entity.createTime}
+ AND t.dept_id=#{ew.entity.deptId}
+ AND d.dept_name=#{ew.entity.deptName}
+ AND g.phone LIKE CONCAT('%',#{ew.entity.phone},'%')
+ AND t.create_time >= #{ew.entity.startTime}
+ AND t.create_time <= #{ew.entity.endTime}
+ AND t.amount >=#{ew.entity.minAmount}
+ AND t.status IN (#{__frch_item_0},#{__frch_item_1})
+ AND t.id NOT IN (#{__frch_item_2})
+
+ AND t.del_flag='0'
+
+AND (name = #{ew.paramNameValuePairs.MPGENVAL1})
+<<<GoldenOrderMapper.selectCount | ewNull>>>
+SELECT COUNT( * ) AS total FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.del_flag='0'
+<<<GoldenOrderMapper.selectCount | ewEmpty>>>
+SELECT COUNT( * ) AS total FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE  t.del_flag='0'
+<<<GoldenOrderMapper.selectCount | full>>>
+SELECT COUNT( * ) AS total FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.id=#{ew.entity.id}
+ AND t.name=#{ew.entity.name}
+ AND t.status=#{ew.entity.status}
+ AND t.amount=#{ew.entity.amount}
+ AND t.create_time=#{ew.entity.createTime}
+ AND t.dept_id=#{ew.entity.deptId}
+ AND d.dept_name=#{ew.entity.deptName}
+ AND g.phone LIKE CONCAT('%',#{ew.entity.phone},'%')
+ AND t.create_time >= #{ew.entity.startTime}
+ AND t.create_time <= #{ew.entity.endTime}
+ AND t.amount >=#{ew.entity.minAmount}
+ AND t.status IN (#{__frch_item_0},#{__frch_item_1})
+ AND t.id NOT IN (#{__frch_item_2})
+
+ AND t.del_flag='0'
+
+AND (name = #{ew.paramNameValuePairs.MPGENVAL1})
+<<<GoldenOrderMapper.selectListByScope | ewNull>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.del_flag='0'
+<<<GoldenOrderMapper.selectListByScope | ewEmpty>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE  t.del_flag='0'
+<<<GoldenOrderMapper.selectListByScope | full>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.id=#{ew.entity.id}
+ AND t.name=#{ew.entity.name}
+ AND t.status=#{ew.entity.status}
+ AND t.amount=#{ew.entity.amount}
+ AND t.create_time=#{ew.entity.createTime}
+ AND t.dept_id=#{ew.entity.deptId}
+ AND d.dept_name=#{ew.entity.deptName}
+ AND g.phone LIKE CONCAT('%',#{ew.entity.phone},'%')
+ AND t.create_time >= #{ew.entity.startTime}
+ AND t.create_time <= #{ew.entity.endTime}
+ AND t.amount >=#{ew.entity.minAmount}
+ AND t.status IN (#{__frch_item_0},#{__frch_item_1})
+ AND t.id NOT IN (#{__frch_item_2})
+
+ AND t.del_flag='0'
+
+AND (name = #{ew.paramNameValuePairs.MPGENVAL1})
+<<<GoldenOrderMapper.selectPageByScope | ewNull>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.del_flag='0'
+<<<GoldenOrderMapper.selectPageByScope | ewEmpty>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE  t.del_flag='0'
+<<<GoldenOrderMapper.selectPageByScope | full>>>
+SELECT  t.id,t.name,t.status,t.amount,t.create_time,t.dept_id,t.del_flag,d.dept_name deptName,g.phone phone  FROM golden_order t  left join golden_dept d on d.id = t.dept_id left join golden_dept g on g.id = t.dept_id 
+ WHERE t.id=#{ew.entity.id}
+ AND t.name=#{ew.entity.name}
+ AND t.status=#{ew.entity.status}
+ AND t.amount=#{ew.entity.amount}
+ AND t.create_time=#{ew.entity.createTime}
+ AND t.dept_id=#{ew.entity.deptId}
+ AND d.dept_name=#{ew.entity.deptName}
+ AND g.phone LIKE CONCAT('%',#{ew.entity.phone},'%')
+ AND t.create_time >= #{ew.entity.startTime}
+ AND t.create_time <= #{ew.entity.endTime}
+ AND t.amount >=#{ew.entity.minAmount}
+ AND t.status IN (#{__frch_item_0},#{__frch_item_1})
+ AND t.id NOT IN (#{__frch_item_2})
+
+ AND t.del_flag='0'
+
+AND (name = #{ew.paramNameValuePairs.MPGENVAL1})
+<<<GoldenUserMapper.selectById | id>>>
+SELECT id,name,age,create_time,(select count(1) from golden_order o where o.dept_id = golden_user.id) as orderCount FROM golden_user t WHERE id=#{id}
+<<<GoldenUserMapper.selectPage | ewNull>>>
+SELECT  id,name,age,create_time  FROM golden_user t
+<<<GoldenUserMapper.selectPage | ewEmpty>>>
+SELECT  id,name,age,create_time  FROM golden_user t
+<<<GoldenUserMapper.selectPage | full>>>
+SELECT  id,name,age,create_time  FROM golden_user t 
+ 
+ WHERE id=#{ew.entity.id}
+ AND name=#{ew.entity.name}
+ AND age=#{ew.entity.age}
+ AND create_time=#{ew.entity.createTime}
+ AND create_time >= #{ew.entity.startTime}
+ AND create_time <= #{ew.entity.endTime}
+ AND age >=#{ew.entity.minAge}
+ AND t.age >=#{ew.entity.maxAge}
+ AND age IN (#{__frch_item_0},#{__frch_item_1})
+
+AND (name = #{ew.paramNameValuePairs.MPGENVAL1})
+<<<GoldenUserMapper.selectList | ewNull>>>
+SELECT  id,name,age,create_time  FROM golden_user t
+<<<GoldenUserMapper.selectList | ewEmpty>>>
+SELECT  id,name,age,create_time  FROM golden_user t
+<<<GoldenUserMapper.selectList | full>>>
+SELECT  id,name,age,create_time  FROM golden_user t 
+ 
+ WHERE id=#{ew.entity.id}
+ AND name=#{ew.entity.name}
+ AND age=#{ew.entity.age}
+ AND create_time=#{ew.entity.createTime}
+ AND create_time >= #{ew.entity.startTime}
+ AND create_time <= #{ew.entity.endTime}
+ AND age >=#{ew.entity.minAge}
+ AND t.age >=#{ew.entity.maxAge}
+ AND age IN (#{__frch_item_0},#{__frch_item_1})
+
+AND (name = #{ew.paramNameValuePairs.MPGENVAL1})
+<<<GoldenUserMapper.selectCount | ewNull>>>
+SELECT COUNT( * ) AS total FROM golden_user t
+<<<GoldenUserMapper.selectCount | ewEmpty>>>
+SELECT COUNT( * ) AS total FROM golden_user t
+<<<GoldenUserMapper.selectCount | full>>>
+SELECT COUNT( * ) AS total FROM golden_user t 
+ 
+ WHERE id=#{ew.entity.id}
+ AND name=#{ew.entity.name}
+ AND age=#{ew.entity.age}
+ AND create_time=#{ew.entity.createTime}
+ AND create_time >= #{ew.entity.startTime}
+ AND create_time <= #{ew.entity.endTime}
+ AND age >=#{ew.entity.minAge}
+ AND t.age >=#{ew.entity.maxAge}
+ AND age IN (#{__frch_item_0},#{__frch_item_1})
+
+AND (name = #{ew.paramNameValuePairs.MPGENVAL1})
