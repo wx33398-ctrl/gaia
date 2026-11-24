@@ -1,0 +1,3 @@
+# 全库统一 LF；golden 基线文件禁止任何行尾转换（内容按 LF 逐字比对）
+* text=auto eol=lf
+src/test/resources/golden/golden-sql.txt -text
