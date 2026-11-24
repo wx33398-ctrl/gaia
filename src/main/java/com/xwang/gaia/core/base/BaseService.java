@@ -243,7 +243,7 @@ public interface BaseService<E, D extends BaseDTO> {
 	 */
 	default Long queryCount(D dto) {
 		QueryWrapper<E> query = Wrappers.query();
-		query.setEntity(convertToEntity(dto));
+		query.setEntity(convertToEntityForQuery(dto));
 		return getMapper().selectCount(query);
 	}
 
@@ -265,7 +265,7 @@ public interface BaseService<E, D extends BaseDTO> {
 	 */
 	default E queryOne(D dto) {
 		QueryWrapper<E> query = Wrappers.query();
-		query.setEntity(convertToEntity(dto));
+		query.setEntity(convertToEntityForQuery(dto));
 		return getMapper().selectOne(query);
 	}
 
@@ -297,7 +297,7 @@ public interface BaseService<E, D extends BaseDTO> {
 	 */
 	default int removeEntity(D dto) {
 		QueryWrapper<E> query = Wrappers.query();
-		query.setEntity(convertToEntity(dto));
+		query.setEntity(convertToEntityForQuery(dto));
 		return getMapper().delete(query);
 	}
 

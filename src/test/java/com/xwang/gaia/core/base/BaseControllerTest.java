@@ -188,17 +188,21 @@ class BaseControllerTest {
 		CtlDTO dto = new CtlDTO();
 		dto.setName("张三");
 		String key = ctl.getCacheKey(dto);
-		// 完整钉桩：非空过滤 + BaseDTO 分页默认值参与 + TreeMap 键名字典序 + UTF-8 字节 md5（特征化测试）
-		String full = "{current=1, isSearchCount=true, maxLimit=0, name=张三, optimizeCountSql=true, orders=[], size=10}";
+		// 完整钉桩：非空过滤（含空集合）+ BaseDTO 分页默认值参与 + TreeMap 键名字典序 + UTF-8 字节 md5（特征化测试）
+		String full = "{current=1, isSearchCount=true, maxLimit=0, name=张三, optimizeCountSql=true, size=10}";
 		String utf8 = DigestUtils.md5DigestAsHex(full.getBytes(StandardCharsets.UTF_8));
 		String gbk = DigestUtils.md5DigestAsHex(full.getBytes(Charset.forName("GBK")));
 		assertEquals(utf8, key, "缓存键必须按 UTF-8 字节计算");
 		assertNotEquals(gbk, key);
-		// 空值过滤：name 为空不进键；两次调用稳定
-		String empty = "{current=1, isSearchCount=true, maxLimit=0, optimizeCountSql=true, orders=[], size=10}";
+		// 空值过滤：name 为空、orders 空集合都不进键；两次调用稳定
+		String empty = "{current=1, isSearchCount=true, maxLimit=0, optimizeCountSql=true, size=10}";
 		String emptyKey = ctl.getCacheKey(new CtlDTO());
 		assertEquals(DigestUtils.md5DigestAsHex(empty.getBytes(StandardCharsets.UTF_8)), emptyKey);
 		assertEquals(ctl.getCacheKey(new CtlDTO()), emptyKey);
+		// 回归锁：空集合与 null 归一化同键（两者产生同一条 SQL，不该分裂缓存 key）
+		CtlDTO nullOrders = new CtlDTO();
+		nullOrders.setOrders(null);
+		assertEquals(emptyKey, ctl.getCacheKey(nullOrders), "空集合与null必须同键");
 	}
 
 	@Test

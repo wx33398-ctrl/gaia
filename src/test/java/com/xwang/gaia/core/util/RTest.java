@@ -65,6 +65,22 @@ class RTest {
 	}
 
 	@Test
+	void success对空分页records回空列表而非null() {
+		// 出参契约：空结果 records=[] 而非 null，前端免判空
+		Page<String> page = new Page<>(1, 10);
+		page.setTotal(0);
+		page.setRecords(new ArrayList<>());
+
+		R.Data data = (R.Data) R.success(page, (String s) -> s).getData();
+		assertNotNull(data.getRecords());
+		assertTrue(data.getRecords().isEmpty());
+
+		R.Data data2 = (R.Data) R.success(page, (String s) -> s, s -> { }).getData();
+		assertNotNull(data2.getRecords());
+		assertTrue(data2.getRecords().isEmpty());
+	}
+
+	@Test
 	void failure取异常状态码与消息() {
 		R r = R.failure(BusinessException.Status.NOT_FOUND_RECORD);
 		assertEquals(10104, r.getCode());

@@ -233,9 +233,14 @@ public abstract class BaseController<E, D extends BaseDTO, V extends BaseVO> {
 			f.setAccessible(true);
 			try {
 				Object v = f.get(dto);
-				if (v != null && !(v instanceof String && ((String) v).isEmpty())) {
-					nonNull.put(f.getName(), v);
+				// 空 String/空集合与 null 产生同一条 SQL，归一化掉避免无谓的缓存 miss
+				if (v == null
+						|| v instanceof String s && s.isEmpty()
+						|| v instanceof Collection<?> c && c.isEmpty()
+						|| v instanceof Map<?, ?> m && m.isEmpty()) {
+					continue;
 				}
+				nonNull.put(f.getName(), v);
 			} catch (IllegalAccessException ignored) {
 			}
 		}
@@ -251,7 +256,7 @@ public abstract class BaseController<E, D extends BaseDTO, V extends BaseVO> {
 	 */
 	public String getCacheKey(D dto, String str){
 		String cacheKey = str + getCacheKey(dto);
-		log.info("cacheKey={}", cacheKey);
+		log.debug("cacheKey={}", cacheKey);
 		return cacheKey;
 	}
 

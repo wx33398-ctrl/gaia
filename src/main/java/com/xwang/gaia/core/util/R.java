@@ -75,10 +75,10 @@ public class R<T> implements Serializable {
 			return result;
 		}
 		Data data = new Data(page.getTotal(), page.getPages(), page.getSize(), page.getCurrent());
-		if (null != page.getRecords() && page.getRecords().size() > 0) {
-			if (func != null) {
-				data.setRecords(page.getRecords().stream().map(func).collect(Collectors.toList()));
-			}
+		if (func != null) {
+			// 空结果集回 []，出参契约稳定，前端不必判 null
+			List<S> records = page.getRecords() == null ? List.of() : page.getRecords().stream().map(func).collect(Collectors.toList());
+			data.setRecords(records);
 		}
 		result.setData(data);
 		return result;
@@ -94,14 +94,13 @@ public class R<T> implements Serializable {
 			return result;
 		}
 		Data data = new Data(page.getTotal(), page.getPages(), page.getSize(), page.getCurrent());
-		if (null != page.getRecords() && page.getRecords().size() > 0) {
-			if (func != null) {
-				List<S> recordList = page.getRecords().stream().map(func).collect(Collectors.toList());
-				if (func2 != null) {
-					recordList.forEach(func2);
-				}
-				data.setRecords(recordList);
+		if (func != null) {
+			// 空结果集回 []，出参契约稳定，前端不必判 null
+			List<S> recordList = page.getRecords() == null ? List.of() : page.getRecords().stream().map(func).collect(Collectors.toList());
+			if (func2 != null) {
+				recordList.forEach(func2);
 			}
+			data.setRecords(recordList);
 		}
 		result.setData(data);
 		return result;

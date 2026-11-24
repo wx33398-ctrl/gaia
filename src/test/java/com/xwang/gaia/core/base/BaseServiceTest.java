@@ -14,9 +14,11 @@ import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -228,5 +230,47 @@ class BaseServiceTest {
 
 		dto.setMaxLimit(500L);
 		assertEquals(500L, dto.getPage().maxLimit().longValue());
+	}
+
+	@Test
+	void 查询钩子对count与one与条件删除同样生效() {
+		// 回归锁：queryCount/queryOne/removeEntity(D) 必须与 queryPage/queryList 一致走 convertToEntityForQuery，
+		// 否则宿主覆写查询预处理后，count 与 page 条件背离、条件删除删多删少
+		AtomicReference<Object> captured = new AtomicReference<>();
+		BaseMapper<GoodsEntity> mapper = (BaseMapper<GoodsEntity>) Proxy.newProxyInstance(
+				BaseMapper.class.getClassLoader(), new Class<?>[]{BaseMapper.class},
+				(proxy, method, args) -> {
+					if (args != null && args.length > 0 && args[0] instanceof QueryWrapper<?> qw) {
+						captured.set(qw.getEntity());
+					}
+					Class<?> rt = method.getReturnType();
+					if (rt == long.class || rt == Long.class) return 0L;
+					if (rt == int.class || rt == Integer.class) return 0;
+					return null;
+				});
+		GoodsService hooked = new GoodsServiceImpl() {
+			@Override
+			public BaseMapper<GoodsEntity> getMapper() {
+				return mapper;
+			}
+
+			@Override
+			public GoodsEntity convertToEntityForQuery(GoodsDTO dto) {
+				GoodsEntity e = new GoodsEntity();
+				e.setName("hooked:" + dto.getName());
+				return e;
+			}
+		};
+		GoodsDTO dto = new GoodsDTO();
+		dto.setName("a");
+
+		hooked.queryCount(dto);
+		assertEquals("hooked:a", ((GoodsEntity) captured.get()).getName());
+
+		hooked.queryOne(dto);
+		assertEquals("hooked:a", ((GoodsEntity) captured.get()).getName());
+
+		hooked.removeEntity(dto);
+		assertEquals("hooked:a", ((GoodsEntity) captured.get()).getName());
 	}
 }

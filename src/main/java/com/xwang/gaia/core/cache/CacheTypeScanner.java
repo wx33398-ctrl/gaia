@@ -1,6 +1,5 @@
 package com.xwang.gaia.core.cache;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.xwang.gaia.core.mybatisplus.annotation.TableType;
@@ -25,58 +24,6 @@ import java.util.Set;
 public class CacheTypeScanner {
 
     private static final Logger log = LoggerFactory.getLogger(CacheTypeScanner.class);
-
-    /**
-     * 扫描指定包下的实体类，返回指定表类型的缓存名集合。
-     * 缓存名格式：{prefix}_{tableName}
-     *
-     * @param entityPackage 实体类所在包名
-     * @param cachePrefix   缓存名前缀
-     * @param tableType     表类型枚举
-     * @return 缓存名集合
-     */
-    public static Set<String> scanCaches(String entityPackage, String cachePrefix, TableTypeEnum tableType) {
-        String path = entityPackage.replace('.', '/');
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        try {
-            URL resource = classLoader.getResource(path);
-            if (resource == null) {
-                return Collections.emptySet();
-            }
-            Set<String> caches = new HashSet<>();
-            String filePath = resource.getPath();
-            for (Class<?> cls : scanClasses(classLoader, path, filePath, entityPackage)) {
-                TableName tableName = cls.getAnnotation(TableName.class);
-                if (tableName == null) continue;
-                String cacheName = cachePrefix + "_" + tableName.value();
-                TableType annotation = cls.getAnnotation(TableType.class);
-                if (annotation != null && annotation.value() == tableType) {
-                    caches.add(cacheName);
-                    log.info("[CacheTypeScanner] 扫描匹配 [注解] - class: {}, cacheName: {}, tableType: {}", cls.getSimpleName(), cacheName, annotation.value());
-                } else if (annotation == null && tableType == TableTypeEnum.BUSINESS) {
-                    caches.add(cacheName);
-                    log.info("[CacheTypeScanner] 扫描匹配 [默认BUSINESS] - class: {}, cacheName: {}", cls.getSimpleName(), cacheName);
-                }
-            }
-            return caches;
-        } catch (Exception e) {
-            return Collections.emptySet();
-        }
-    }
-
-    /**
-     * 扫描 DICT 类型缓存名（快捷方法）
-     */
-    public static Set<String> scanDictCaches(String entityPackage, String cachePrefix) {
-        return scanCaches(entityPackage, cachePrefix, TableTypeEnum.CONFIG);
-    }
-
-    /**
-     * 扫描 BUSINESS 类型缓存名（快捷方法，含未标注 @TableType 的实体）
-     */
-    public static Set<String> scanBusinessCaches(String entityPackage, String cachePrefix) {
-        return scanCaches(entityPackage, cachePrefix, TableTypeEnum.BUSINESS);
-    }
 
     /**
      * 基于 Entity 类名扫描缓存名。
